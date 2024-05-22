@@ -1,79 +1,79 @@
-output "print"{
-    value = local.servicename
-}
-output "secondprint"{
-    value = local.forum
+//==================================================1st May 2024=========================================//
+variable "original_string" {
+  default = "Montreal College Information Technology"
 }
 
-output "lengthsa"{
-    value=local.lengthsa
-}
-output "lengthforum"{
-    value=local.lengthforum
+# Function 1: Length of the string
+output "string_length" {
+  value = length(var.original_string)
 }
 
-output "countNumber"{
-    value=var.countNumber
-}
-output "wintersportslist"{
-    value=[for sport in local.winterlistOfSports:sport]
-}
-/*
-for 1st element in -->inside the list variable winterlistOfSports--->"icehockey"1st element
-for 2nd element in -->inside the list variable winterlistOfSports--->"snowboarding" 2nd element
-for 3rd element in -->inside the list variable winterlistOfSports--->"iceskating" 3rd element
-*/
-
-output "sumofthreenumbers"{
-    value=sum([for numberoutput in local.total_output: tonumber(numberoutput)])
-}
-output "id" {
-  value = [
-    for cluster in azurerm_kubernetes_cluster.batchabcd: cluster.id
-  ]
+# Function 2: Uppercase the string
+output "uppercase_string" {
+  value = upper(var.original_string)
 }
 
-output "kube_config" {
-  sensitive = true
-  value = [ 
-    for cluster in azurerm_kubernetes_cluster.batchabcd: cluster.kube_config_raw
-  ]
+# Function 3: Lowercase the string
+output "lowercase_string" {
+  value = lower(var.original_string)
 }
 
-output "client_key" {
-  sensitive = true
-  value = [
-    for cluster in azurerm_kubernetes_cluster.batchabcd: cluster.kube_config.0.client_key
-  ]
+# Function 4: Replace "Hello" with "Hi"
+output "replaced_string" {
+  value = replace(var.original_string, "Montreal College Information Technology", "McGill University")
 }
 
-output "client_certificate" {
-  sensitive = true
-  value = [
-    for cluster in azurerm_kubernetes_cluster.batchabcd: cluster.kube_config.0.client_certificate
-  ]
+# Function 5: Concatenate with another string
+variable "additional_string" {
+  default = " from Terraform"
 }
 
-output "cluster_ca_certificate" {
-  sensitive = true
-  value = [
-    for cluster in azurerm_kubernetes_cluster.batchabcd: cluster.kube_config.0.cluster_ca_certificate
-  ]
+output "concatenated_string" {
+  value = "${var.original_string}${var.additional_string}"
 }
 
-output "host" {
-  sensitive = true
-  value = [
-    for cluster in azurerm_kubernetes_cluster.batchabcd: cluster.kube_config.0.host
-  ]
-}
-output "exampleoutput" {
-  value =    { for character in local.characters: # Convert character list to a set
-      character => local.enemies_destroyed
-  }
-
+# Function 6: Substring - Extract "World" from the string
+output "substring_example" {
+  value = substr(var.original_string, 6, -1)
 }
 
-output "character_enemy_output" {
-  value = local.character_enemy_map
+# Function 7: Split the string by space into a list
+output "split_example" {
+  value = split(" ", var.original_string)
+}
+
+# Function 8: Join a list of strings into a single string with a separator
+variable "string_list" {
+  default = ["Montreal", "College","Information","Technology"]
+}
+
+output "join_example" {
+  value = join(" ", var.string_list)
+}
+
+# Function 9: Trim leading and trailing whitespace
+variable "whitespace_string" {
+  default = "  Trimmed String  "
+}
+
+output "trimmed_string" {
+  value = trim(var.whitespace_string," ")
+}
+
+
+output "reverse_example" {
+  value = join("", reverse(split("", var.original_string)))
+}
+
+locals {
+  contains_keyword = contains(split(" ", var.firstname), "mina")
+}
+
+
+output "string_contains_no_sample" {
+  value = local.contains_keyword ? "String contains 'Mcit'" : "String does not contain 'Mcit'"
+}
+
+output "string_contains_sample" {
+  value = local.contains_keyword ? "String contains 'Montreal'" : "String does not contain 'Montreal'"
 }
